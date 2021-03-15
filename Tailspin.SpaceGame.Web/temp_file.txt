@@ -1,0 +1,1 @@
+Server=tcp:tailspin-space-game-sql-1996.database.windows.net,1433;Initial Catalog=tailspindatabase;Persist Security Info=False;User ID=azuresql;Password=Unical2021;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
