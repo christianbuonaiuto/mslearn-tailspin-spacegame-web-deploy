@@ -163,7 +163,29 @@ stages:
                     Description = ""
                     Type = "Vsts"
                     Variables = $vars}
-                  Update-VSTeamVariableGroup @methodParameters} 
+                  Update-VSTeamVariableGroup @methodParameters
+                  } else {
+                    Install-Module VSTeam -Scope CurrentUser -Force
+                  Set-VSTeamAccount –Account $(Acct) -PersonalAccessToken $(PAT)
+                  $methodParameters = @{
+                    ProjectName = "$(System.TeamProject)"
+                    Name = "Release"}
+                  $vg = Get-VSTeamVariableGroup @methodParameters
+                  $vars = @{}
+                  $vg.variables | Get-Member -MemberType *Property | %{$vars.($_.Name) = $vg.variables.($_.Name)}
+                  $varName = "schemaChanged"
+                  $vars.$varName= @{}
+                  $vars.$varName.value = "False"
+                  $vars.$varName.isSecret = $false
+                  $methodParameters = @{
+                    id = $vg.id
+                    ProjectName = "$(System.TeamProject)"
+                    Name = "Release"
+                    Description = ""
+                    Type = "Vsts"
+                    Variables = $vars}
+                  Update-VSTeamVariableGroup @methodParameters
+                  }
 
 - stage: DBAVerificationApply
   variables: 
